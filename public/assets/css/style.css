@@ -1,0 +1,16 @@
+input[type=range]::-webkit-slider-thumb {
+  background-color: black;
+}
+input[type=range]::-moz-range-thumb {
+  background-color: black;
+}
+input[type=range]::-ms-thumb {
+  background-color: black;
+}
+
+input[type=range] + .thumb {
+  background-color: black;
+}
+input[type=range] + .thumb.active .value {
+  color: white;
+}
