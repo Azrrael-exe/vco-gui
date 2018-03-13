@@ -7,12 +7,11 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-socket-io/0.7.0/socket.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
     <script src="/app/app.js"></script>
     <link href="assets/css/style.css" rel="stylesheet"/>
   </head>
@@ -20,28 +19,81 @@
   <body ng-app='vco-gui' ng-controller='voltageController'>
     <div class="container">
       <div class="row" style="padding-top:5%;">
-      <div class="col s12 m8 offset-m2">
-        <h2 style="text-align:center">VCO-Controller</h2>
-        <form action="#">
-          <label style="font-size:20px">Amplitude</label>
-          <p class="range-field">
-            <input ng-init="amp=0" type="range" min="0" max="100"  ng-model="amp">
-          </p>
-          <label style="font-size:20px">Offser</label>
-          <p class="range-field">
-            <input ng-init="off=0" type="range" min="0" max="100"  ng-model="off">
-          </p>
-          <label style="font-size:20px">Noise</label>
-          <p class="range-field">
-            <input class="red lighten-1" type="range" ng-init="noi=0"  min="0" max="100"  ng-model="noi">
-          </p>
-          <br>
-          <a class="waves-effect waves-light btn black" ng-click="sendControl(amp, off, noi)">Send</a>
-        </form>
-      </div>
-      </div>
+        <h2 style="text-align:center">VCO-Calibration</h2>
+        <div class="row">
+          <div class="col m4 offset-m2">
+            <form action="#">
+            <div class="input-field col s12">
+              <input id="device_id" type="text" class="validate" ng-model="id">
+              <label style="font-size:20px" for="device_id">Device ID</label>
+            </div>
+            <label style="font-size:20px">Amplitude: {{amp}}</label>
+            <p class="range-field">
+              <input ng-init="amp=0" type="range" min="0" max="100"  ng-model="amp">
+            </p>
+            <label style="font-size:20px">Offset: {{off}}</label>
+            <p class="range-field">
+              <input ng-init="off=0" type="range" min="0" max="100"  ng-model="off">
+            </p>
+            <label style="font-size:20px">Noise: {{noi}}</label>
+            <p class="range-field">
+              <input class="red lighten-1" type="range" ng-init="noi=0"  min="0" max="100"  ng-model="noi">
+            </p>
+            <div class="row">
+              <a style="width:50%; margin-left:25%" class="waves-effect waves-light btn black" ng-click="sendControl(id ,amp, off, noi)">Send</a>
+            </div>
+          </form>
+          </div>
+          <div class="col m4">
+            <form action="#">
+            <div class="input-field col s12">
+              <input id="name" type="text" class="validate" ng-model="name">
+              <label style="font-size:20px" for="name">Config Name</label>
+            </div>
+            <div class="input-field col s12">
+              <input id="vco" type="text" class="validate" ng-model="vco">
+              <label style="font-size:20px" for="name">VCO Ref</label>
+            </div>
+            <br>
+            <div class="row">
+              <a style="width:50%; margin-left:25%" class="waves-effect waves-light btn black" ng-click="saveConfig(name, vco, amp, off, noi)">Save</a>
+            </div>
+          </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col m8 offset-m2">
+            <style>
+              th, td {
+                text-align: center;
+              }
+            </style>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>VCO</th>
+                  <th>Amplitud</th>
+                  <th>Offset</th>
+                  <th>Noise</th>
+                </tr>
+              </thead>
 
+              <tbody>
+                <tr ng-repeat="vco in vcos" ng-click="setConfig(vco)">
+                  <td>{{vco.name}}</td>
+                  <td>{{vco.vco}}</td>
+                  <td>{{vco.A}}</td>
+                  <td>{{vco.O}}</td>
+                  <td>{{vco.N}}</td>
+                </tr>
+              </tbody>
+            </table>
 
+          </div>
+        </div>
+
+      </div>
     </div>
   </body>
 </html>
